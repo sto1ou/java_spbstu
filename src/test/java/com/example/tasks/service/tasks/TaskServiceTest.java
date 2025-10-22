@@ -1,6 +1,7 @@
 package com.example.tasks.service.tasks;
 
 import com.example.tasks.dto.request.TaskCreateRequest;
+import com.example.tasks.mq.MessageSender;
 import com.example.tasks.repository.tasks.ITaskRepo;
 import com.example.tasks.repository.tasks.model.TaskEntity;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import static com.example.tasks.repository.GlobalStatus.PENDING;
 import static java.time.LocalDateTime.now;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,6 +25,9 @@ class TaskServiceTest {
 
     @Mock
     private ITaskRepo iTaskRepo;
+
+    @Mock
+    private MessageSender messageSender;
 
     @InjectMocks
     private TaskService taskService;
@@ -35,6 +40,7 @@ class TaskServiceTest {
         final TaskCreateRequest given = new TaskCreateRequest("test", target, 1L, null);
 
         when(iTaskRepo.save(any(TaskEntity.class))).thenAnswer(i -> i.getArguments()[0]);
+        doNothing().when(messageSender).send(any(TaskEntity.class));
 
         final TaskEntity result = taskService.save(given);
 

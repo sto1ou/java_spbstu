@@ -28,13 +28,13 @@ public class TaskService implements ITaskService {
     private MessageSender messageSender;
 
     @Override
-    @Cacheable(value = "all_tasks", key = "#user")
+    @Cacheable(value = "all_tasks", key = "#user", condition = "#user != null")
     public List<TaskEntity> findAllByUser(final Long user) {
         return iTaskRepo.findAllByUser(user);
     }
 
     @Override
-    @Cacheable(value = "pending_tasks", key = "#user")
+    @Cacheable(value = "pending_tasks", key = "#user", condition = "#user != null")
     public List<TaskEntity> findPendingByUser(final Long user) {
         return iTaskRepo.findPendingByUser(user);
     }
@@ -63,6 +63,17 @@ public class TaskService implements ITaskService {
     @CacheEvict(value = {"all_tasks", "pending_tasks"}, allEntries = true)
     public void delete(final Long id) {
         iTaskRepo.delete(id);
+    }
+
+    @Override
+    public List<Long> findOverdueIds() {
+        return iTaskRepo.findOverdueIds();
+    }
+
+    @Override
+    @CacheEvict(value = {"all_tasks", "pending_tasks"}, allEntries = true)
+    public void changeStatus(final Long id, final GlobalStatus status) {
+        iTaskRepo.changeStatus(id, status);
     }
 
     private static long getNextId() {

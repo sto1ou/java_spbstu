@@ -4,6 +4,7 @@ import com.example.tasks.dto.request.SignInRequest;
 import com.example.tasks.exceptions.ClientException;
 import com.example.tasks.repository.users.IUserRepo;
 import com.example.tasks.repository.users.model.UserEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,7 @@ import static com.example.tasks.utils.PasswordUtils.matches;
 import static com.example.tasks.utils.PasswordUtils.md5;
 import static java.lang.System.currentTimeMillis;
 
+@Slf4j
 @Profile("!mem")
 @Repository
 public class UserJpaRepo implements IUserRepo {
@@ -37,11 +39,13 @@ public class UserJpaRepo implements IUserRepo {
     @Override
     public UserEntity save(final SignInRequest request) {
 
+        log.info("saving: {}", request);
+
         final String username = request.getUsername();
 
         final Optional<UserEntity> entity = iUserJpaRepo.findByLogin(request.getUsername());
 
-        if (entity.isEmpty()) {
+        if (entity.isPresent()) {
             throw new ClientException("Пользователь уже зарегистрирован в системе");
         }
 

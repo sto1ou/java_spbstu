@@ -4,6 +4,18 @@ ___
 
 ### Deploy Dockerized Application:
 
+If they are not installed yet, download and install them:
+
+Java 17 or later: https://adoptium.net
+
+Apache Maven: https://maven.apache.org/download.cgi
+
+After installation, verify the versions in the terminal:
+
+* run `java -version`
+* run `mvn -v`
+
+
 * check docker is ready: `docker info`
 
 * run `mvn clean compile -f pom.xml`
