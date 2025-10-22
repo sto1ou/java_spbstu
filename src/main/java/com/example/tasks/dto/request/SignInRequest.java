@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Для логина и регистрации
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

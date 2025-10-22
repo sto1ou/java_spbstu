@@ -1,32 +1,29 @@
-package com.example.tasks.repository.users;
+package com.example.tasks.repository.users.integration;
 
 import com.example.tasks.dto.request.SignInRequest;
 import com.example.tasks.exceptions.ClientException;
+import com.example.tasks.repository.users.IUserRepo;
 import com.example.tasks.repository.users.model.UserEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 import static com.example.tasks.utils.PasswordUtils.matches;
 import static com.example.tasks.utils.PasswordUtils.md5;
 import static java.lang.System.currentTimeMillis;
-import static java.util.Optional.ofNullable;
 
-@Profile("mem")
+@Profile("!mem")
 @Repository
-public class UserRepo implements IUserRepo {
+public class UserJpaRepo implements IUserRepo {
 
-    private static final AtomicLong ID = new AtomicLong(1L);
-    private static final Map<String, UserEntity> USERS = new HashMap<>();
+    @Autowired
+    private IUserJpaRepo iUserJpaRepo;
 
     @Override
     public UserEntity signIn(final SignInRequest request) {
 
-        final UserEntity user = ofNullable(USERS.get(request.getUsername()))
-                .orElseThrow(() -> new ClientException("Неверный логин или пароль"));
+        final UserEntity user = iUserJpaRepo.findByLogin(request.getUsername())
+                                            .orElseThrow(() -> new ClientException("Неверный логин или пароль"));
 
         if (matches(request.getPassword(), user.getPassword())) {
             return user;
@@ -40,24 +37,19 @@ public class UserRepo implements IUserRepo {
 
         final String username = request.getUsername();
 
-        if (USERS.containsKey(username)) {
+        iUserJpaRepo.findByLogin(request.getUsername()).ifPresent(u -> {
             throw new ClientException("Пользователь уже зарегистрирован в системе");
-        }
+        });
 
         final UserEntity user = UserEntity
                 .builder()
-                .id(getNextId())
                 .login(username)
                 .password(md5(request.getPassword()))
                 .created(currentTimeMillis())
                 .build();
 
-        USERS.put(username, user);
+        iUserJpaRepo.save(user);
 
         return user;
-    }
-
-    private static long getNextId() {
-        return ID.getAndIncrement();
     }
 }

@@ -2,6 +2,7 @@ package com.example.tasks.repository.tasks;
 
 import com.example.tasks.exceptions.ClientException;
 import com.example.tasks.repository.tasks.model.TaskEntity;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -15,6 +16,7 @@ import java.util.Set;
 import static com.example.tasks.repository.GlobalStatus.DELETED;
 import static com.example.tasks.repository.GlobalStatus.PENDING;
 
+@Profile("mem")
 @Repository
 public class TaskRepo implements ITaskRepo {
 

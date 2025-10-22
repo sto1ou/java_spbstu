@@ -4,6 +4,9 @@ import com.example.tasks.repository.notifications.model.NotificationEntity;
 
 import java.util.List;
 
+/**
+ * Общий интерфейс
+ */
 public interface INotificationRepo {
 
     List<NotificationEntity> findAllByUser(final Long userId);
