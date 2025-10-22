@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 import static com.example.tasks.utils.PasswordUtils.matches;
 import static com.example.tasks.utils.PasswordUtils.md5;
 import static java.lang.System.currentTimeMillis;
@@ -37,19 +39,17 @@ public class UserJpaRepo implements IUserRepo {
 
         final String username = request.getUsername();
 
-        iUserJpaRepo.findByLogin(request.getUsername()).ifPresent(u -> {
-            throw new ClientException("Пользователь уже зарегистрирован в системе");
-        });
+        final Optional<UserEntity> entity = iUserJpaRepo.findByLogin(request.getUsername());
 
-        final UserEntity user = UserEntity
+        if (entity.isEmpty()) {
+            throw new ClientException("Пользователь уже зарегистрирован в системе");
+        }
+
+        return iUserJpaRepo.save(UserEntity
                 .builder()
                 .login(username)
                 .password(md5(request.getPassword()))
                 .created(currentTimeMillis())
-                .build();
-
-        iUserJpaRepo.save(user);
-
-        return user;
+                .build());
     }
 }

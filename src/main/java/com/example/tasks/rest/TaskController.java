@@ -40,7 +40,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<TaskEntity> create(@Valid @RequestBody final TaskCreateRequest body) {
+    public ResponseEntity<TaskEntity> create(@Valid @RequestBody final TaskCreateRequest body) throws Exception {
         return status(CREATED).body(iTaskService.save(body));
     }
 

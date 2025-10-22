@@ -24,7 +24,7 @@ public class NotificationJpaRepo implements INotificationRepo {
 
     @Override
     public List<NotificationEntity> findPendingByUser(final Long userId) {
-        return iNotificationJpaRepo.findByUserAndStatus(userId, PENDING);
+        return iNotificationJpaRepo.findByUserAndStatus(userId, PENDING.name());
     }
 
     @Override

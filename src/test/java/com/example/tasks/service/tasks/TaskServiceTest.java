@@ -28,7 +28,7 @@ class TaskServiceTest {
     private TaskService taskService;
 
     @Test
-    void save() {
+    void save() throws Exception {
 
         final LocalDateTime target = now();
 
