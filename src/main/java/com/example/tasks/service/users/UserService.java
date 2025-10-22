@@ -13,12 +13,12 @@ public class UserService implements IUserService {
     private IUserRepo iUserRepo;
 
     @Override
-    public UserEntity signIn(SignInRequest request) {
+    public UserEntity signIn(final SignInRequest request) {
         return iUserRepo.signIn(request);
     }
 
     @Override
-    public UserEntity signUp(SignInRequest request) {
+    public UserEntity signUp(final SignInRequest request) {
         return iUserRepo.save(request);
     }
 }
