@@ -6,7 +6,9 @@ ___
 
 * check docker is ready: `docker info`
 
-* run `docker-compose up --build` or `docker compose up --build`
+* run `mvn clean compile -f pom.xml`
+
+* run `docker-compose up --build`
 
 * try sending the request:
 

@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -36,6 +37,7 @@ public class NotificationEntity {
     private Long created;
     private String data;
     @Enumerated(STRING)
+    @ColumnTransformer(write = "?::global_status")
     private GlobalStatus status;
 
     @Override
