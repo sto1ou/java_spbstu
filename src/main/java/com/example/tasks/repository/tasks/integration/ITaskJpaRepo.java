@@ -1,6 +1,5 @@
 package com.example.tasks.repository.tasks.integration;
 
-import com.example.tasks.repository.GlobalStatus;
 import com.example.tasks.repository.tasks.model.TaskEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -28,7 +27,11 @@ public interface ITaskJpaRepo extends JpaRepository<TaskEntity, Long> {
     List<TaskEntity> findByUser(final Long user);
 
     @Transactional
-    List<TaskEntity> findByUserAndStatus(final Long user, final GlobalStatus status);
+    @Query(
+            value = "select * from tasks where \"user\" = :userId and status = (:status)::global_status",
+            nativeQuery = true
+    )
+    List<TaskEntity> findByUserAndStatus(@Param("userId") final Long user, @Param("status") final String status);
 
 
 }

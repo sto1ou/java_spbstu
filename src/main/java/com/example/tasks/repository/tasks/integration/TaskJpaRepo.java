@@ -24,7 +24,7 @@ public class TaskJpaRepo implements ITaskRepo {
 
     @Override
     public List<TaskEntity> findPendingByUser(final Long user) {
-        return iTaskJpaRepo.findByUserAndStatus(user, PENDING);
+        return iTaskJpaRepo.findByUserAndStatus(user, PENDING.name());
     }
 
     @Override
