@@ -1,0 +1,32 @@
+services:
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: server
+    ports:
+      - 8080:8080
+    depends_on:
+      - h2
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:h2:tcp://h2:1521/mem:tasks;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      SPRING_DATASOURCE_USERNAME: h2
+      SPRING_DATASOURCE_PASSWORD:
+    restart: on-failure
+    networks:
+      - dns
+
+  h2:
+    image: oscarfonts/h2:2.1.210
+    container_name: h2
+    ports:
+      - 1521:1521
+      - 81:81
+    environment:
+      H2_OPTIONS: "-tcp -tcpAllowOthers -ifNotExists"
+    networks:
+      - dns
+
+networks:
+  dns:
