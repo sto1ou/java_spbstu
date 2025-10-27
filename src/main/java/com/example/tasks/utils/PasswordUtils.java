@@ -18,7 +18,7 @@ public final class PasswordUtils {
         }
     }
 
-    public static boolean matches(final CharSequence p1, final String p2) {
-        return md5(p1).equals(p2);
+    public static boolean matches(final CharSequence p1, final String hash) {
+        return md5(p1).equals(hash);
     }
 }
