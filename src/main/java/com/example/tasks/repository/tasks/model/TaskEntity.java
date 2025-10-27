@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -39,6 +40,7 @@ public class TaskEntity {
     @Column(name = "\"user\"")
     private Long user;
     @Enumerated(STRING)
+    @ColumnTransformer(write = "?::global_status")
     private GlobalStatus status;
 
     @Override

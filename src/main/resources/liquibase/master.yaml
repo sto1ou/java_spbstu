@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+        file: liquibase/2025-12-10_initial-script.sql
