@@ -1,5 +1,6 @@
 package com.example.tasks.repository.tasks.integration;
 
+import com.example.tasks.repository.GlobalStatus;
 import com.example.tasks.repository.tasks.ITaskRepo;
 import com.example.tasks.repository.tasks.model.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,15 @@ public class TaskJpaRepo implements ITaskRepo {
     @Override
     public void delete(final Long id) {
         iTaskJpaRepo.deleteTask(id);
+    }
+
+    @Override
+    public List<Long> findOverdueIds() {
+        return iTaskJpaRepo.findOverdueIdList();
+    }
+
+    @Override
+    public void changeStatus(final Long id, final GlobalStatus status) {
+        iTaskJpaRepo.changeStatus(id, status.name());
     }
 }

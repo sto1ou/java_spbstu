@@ -33,5 +33,19 @@ public interface ITaskJpaRepo extends JpaRepository<TaskEntity, Long> {
     )
     List<TaskEntity> findByUserAndStatus(@Param("userId") final Long user, @Param("status") final String status);
 
+    @Transactional
+    @Query(
+            value = """
+                    select id from tasks
+                    where status = 'PENDING'::global_status
+                      and target < (extract(epoch from current_timestamp) * 1000)
+                    """,
+            nativeQuery = true
+    )
+    List<Long> findOverdueIdList();
 
+    @Modifying
+    @Transactional
+    @Query(value = "update tasks set status = (:status)::global_status where id = :id", nativeQuery = true)
+    void changeStatus(@Param("id") final Long id, @Param("status") final String status);
 }

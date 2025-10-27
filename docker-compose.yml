@@ -17,6 +17,7 @@ services:
       MEMCACHED_CACHE_SERVERS: memcached:11211
       SPRING_RABBITMQ_USERNAME: rabbitmq
       SPRING_RABBITMQ_PASSWORD: rabbitmq
+      SPRING_RABBITMQ_HOST: rabbitmq
     restart: on-failure
     networks:
       - dns
