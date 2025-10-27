@@ -5,6 +5,9 @@ import java.security.NoSuchAlgorithmException;
 
 import static javax.xml.bind.DatatypeConverter.printHexBinary;
 
+/**
+ * Для шифрования паролей в БД
+ */
 public final class PasswordUtils {
 
     public static String md5(final CharSequence p) {

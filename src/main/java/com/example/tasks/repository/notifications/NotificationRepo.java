@@ -1,6 +1,7 @@
 package com.example.tasks.repository.notifications;
 
 import com.example.tasks.repository.notifications.model.NotificationEntity;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 import static com.example.tasks.repository.GlobalStatus.PENDING;
 
+@Profile("mem")
 @Repository
 public class NotificationRepo implements INotificationRepo {
 
