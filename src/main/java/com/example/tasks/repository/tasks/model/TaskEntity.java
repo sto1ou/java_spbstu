@@ -17,6 +17,8 @@ import lombok.ToString;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 import static jakarta.persistence.EnumType.STRING;
@@ -29,7 +31,10 @@ import static jakarta.persistence.EnumType.STRING;
 @Table(name = "tasks")
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskEntity {
+public class TaskEntity implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

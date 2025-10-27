@@ -5,6 +5,8 @@ import com.example.tasks.repository.GlobalStatus;
 import com.example.tasks.repository.tasks.ITaskRepo;
 import com.example.tasks.repository.tasks.model.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneOffset;
@@ -22,24 +24,27 @@ public class TaskService implements ITaskService {
     private ITaskRepo iTaskRepo;
 
     @Override
+    @Cacheable(value = "all_tasks", key = "#user")
     public List<TaskEntity> findAllByUser(final Long user) {
         return iTaskRepo.findAllByUser(user);
     }
 
     @Override
+    @Cacheable(value = "pending_tasks", key = "#user")
     public List<TaskEntity> findPendingByUser(final Long user) {
         return iTaskRepo.findPendingByUser(user);
     }
 
     @Override
-    public TaskEntity save(final TaskCreateRequest request) {
+    @CacheEvict(value = {"all_tasks", "pending_tasks"}, allEntries = true)
+    public TaskEntity save(final TaskCreateRequest r) {
 
         final TaskEntity task = TaskEntity.builder()
                                           .id(getNextId())
-                                          .name(request.getName())
-                                          .status(GlobalStatus.getValue(request.getStatus()))
-                                          .target(request.getTarget().toInstant(ZoneOffset.UTC).toEpochMilli())
-                                          .user(request.getUser())
+                                          .name(r.getName())
+                                          .status(GlobalStatus.getValue(r.getStatus()))
+                                          .target(r.getTarget().toInstant(ZoneOffset.UTC).toEpochMilli())
+                                          .user(r.getUser())
                                           .created(currentTimeMillis())
                                           .build();
 
@@ -47,6 +52,7 @@ public class TaskService implements ITaskService {
     }
 
     @Override
+    @CacheEvict(value = {"all_tasks", "pending_tasks"}, allEntries = true)
     public void delete(final Long id) {
         iTaskRepo.delete(id);
     }
