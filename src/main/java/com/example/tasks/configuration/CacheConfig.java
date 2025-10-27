@@ -3,7 +3,6 @@ package com.example.tasks.configuration;
 import io.sixhours.memcached.cache.IMemcachedClient;
 import io.sixhours.memcached.cache.MemcachedCacheManager;
 import io.sixhours.memcached.cache.XMemcachedClient;
-import lombok.Getter;
 import net.rubyeye.xmemcached.MemcachedClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
@@ -73,6 +72,5 @@ public class CacheConfig {
         }).toList()).orElse(List.of());
     }
 
-    @Getter
     private record Server(String host, int port) { }
 }

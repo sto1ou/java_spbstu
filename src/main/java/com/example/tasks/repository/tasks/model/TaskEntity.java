@@ -48,6 +48,17 @@ public class TaskEntity implements Serializable {
     @ColumnTransformer(write = "?::global_status")
     private GlobalStatus status;
 
+    public TaskEntity(final Long id, final String name, final Long target, final Long created, final Long user,
+                      final String status) {
+
+        this.id = id;
+        this.name = name;
+        this.target = target;
+        this.created = created;
+        this.user = user;
+        this.status = GlobalStatus.getValue(status);
+    }
+
     @Override
     public final boolean equals(final Object o) {
 

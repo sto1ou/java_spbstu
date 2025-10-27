@@ -11,7 +11,7 @@ public interface ITaskService {
 
     List<TaskEntity> findPendingByUser(final Long user);
 
-    TaskEntity save(final TaskCreateRequest request);
+    TaskEntity save(final TaskCreateRequest request) throws Exception;
 
     void delete(final Long id);
 }
